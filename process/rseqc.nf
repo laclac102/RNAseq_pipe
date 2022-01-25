@@ -19,9 +19,5 @@ process rseqc {
     junction_annotation.py -i ${bam} -r ${params.bed12} -o ${pair_id}.rseqc.junction_annotation
     junction_saturation.py -i ${bam} -o ${pair_id}.rseqc -r ${params.bed12}
     bam_stat.py -i ${bam} > ${pair_id}.rseqc.bam_stat.txt
-
     """
 }
-// workflow {
-//     rseqc(mapping.out.bam, mapping.out.bai, params.bed12)
-// }
