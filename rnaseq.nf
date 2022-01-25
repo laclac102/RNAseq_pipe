@@ -1,19 +1,15 @@
 nextflow.enable.dsl=2
 
-params.baseDir='/mnt/d/RNAseq'
+baseDir='/mnt/d/RNAseq'
     params.reads="${baseDir}/ercc_samples/samples/*{1,2}.fastq"
     params.length=20
     params.quality=20
     params.genome="${baseDir}/ercc_samples/ref/chr22_with_ERCC92.fa"
-    // params.out_Dir="${baseDir}/ercc_samples/output"
-    // params.qc="${baseDir}/ercc_samples/output/QC"
-    // params.trim="${baseDir}/ercc_samples/output/trim"
-    // params.map="${baseDir}/ercc_samples/output/map"
     params.genomeDir="${baseDir}/ercc_samples/index"
     params.bed12="${baseDir}/ercc_samples/ref/bed12/chr22_with_ERCC92.bed12"
-    params.csvDir ="${baseDir}/metadata/ercc_metadata.csv"
+    params.csvDir ="${baseDir}/metadata/ercc_fullmeta.csv"
     params.gtf="${baseDir}/ercc_samples/ref/gtf/chr22_with_ERCC92.gtf"
-    params.bam_suffix = "_Build37-ErccTranscripts-chr22.read_Aligned.sortedByCoord.out.bam"
+    params.bam_suffix = "_Aligned.sortedByCoord.out.bam"
     params.design="${baseDir}/metadata/design.csv"
     params.compare="${baseDir}/metadata/comparison.csv"
     params.deseq2_fdr = 0.05
@@ -21,14 +17,10 @@ params.baseDir='/mnt/d/RNAseq'
     params.gprofiler_fdr = 0.05
     params.gprofiler_organism = 'hsapiens'
 
-Channel
-    .fromFilePairs(params.reads, checkIfExists: true)
-    .set{read_pairs_ch}
-
-// meta = Channel.from(file(params.csvDir))
-//     .splitCsv(header:true)
-//     .map{ row-> tuple("$row.pair_id"), file("$row.bam_path"), file("$row.bai_path") }
-//     .set{sample_ch}
+meta = Channel.from(file(params.csvDir))
+    .splitCsv(header:true)
+    .map{ row-> tuple("$row.pair_id"), file("$row.read1"), file("$row.read2"), ("$row.read1_name"), tuple("$row.read2_name") }
+    .set{sample_ch}
 
 include { qc; trimming; mapping } from './process/map'
 include { rseqc } from ('./process/rseqc')
@@ -41,8 +33,8 @@ include { gprofiler } from ('./process/gprofiler')
 include { multiqc } from ('./process/multiqc')
 
 workflow {
-    qc(read_pairs_ch)
-    trimming(read_pairs_ch)
+    qc(sample_ch)
+    trimming(sample_ch)
     mapping(trimming.out.trim_out, params.genomeDir)
     rseqc(mapping.out.bam, mapping.out.bai, params.bed12)
     qualimap(mapping.out.bam, params.gtf)
