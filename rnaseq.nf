@@ -1,11 +1,9 @@
 nextflow.enable.dsl=2
 
 baseDir='/mnt/d/RNAseq'
-    params.reads="${baseDir}/ercc_samples/samples/*{1,2}.fastq"
     params.length=20
     params.quality=20
-    params.genome="${baseDir}/ercc_samples/ref/chr22_with_ERCC92.fa"
-    params.genomeDir="${baseDir}/ercc_samples/index"
+    params.genomeDir="${baseDir}/ercc_samples/ref/index"
     params.bed12="${baseDir}/ercc_samples/ref/bed12/chr22_with_ERCC92.bed12"
     params.csvDir ="${baseDir}/metadata/ercc_fullmeta.csv"
     params.gtf="${baseDir}/ercc_samples/ref/gtf/chr22_with_ERCC92.gtf"
@@ -19,9 +17,10 @@ baseDir='/mnt/d/RNAseq'
 
 meta = Channel.from(file(params.csvDir))
     .splitCsv(header:true)
-    .map{ row-> tuple("$row.pair_id"), file("$row.read1"), file("$row.read2"), ("$row.read1_name"), tuple("$row.read2_name") }
+    .map{ row-> tuple("$row.pair_id"), file("$row.read1"), file("$row.read2") }
     .set{sample_ch}
 
+include { check_design } from './process/check_design'
 include { qc; trimming; mapping } from './process/map'
 include { rseqc } from ('./process/rseqc')
 include { qualimap } from ('./process/qualimap')
@@ -33,6 +32,7 @@ include { gprofiler } from ('./process/gprofiler')
 include { multiqc } from ('./process/multiqc')
 
 workflow {
+    check_design(params.design, params.compare)
     qc(sample_ch)
     trimming(sample_ch)
     mapping(trimming.out.trim_out, params.genomeDir)
