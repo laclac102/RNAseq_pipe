@@ -39,6 +39,6 @@ process preseq {
 
     script:
     """
-    preseq lc_extrap -v -B ${bam} -o ${pair_id}.ccurve.txt
+    preseq lc_extrap -v -D -B ${bam} -o ${pair_id}.ccurve.txt
     """
 }
