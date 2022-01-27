@@ -1,4 +1,5 @@
 process dupradar {
+    label 'mid_memory'
     tag "Dupradar from $pair_id"
     publishDir "${baseDir}/ercc_samples/output/dupradar" , mode:'copy'
 
@@ -12,11 +13,12 @@ process dupradar {
     path "*_dupMatrix.txt"
     path "*_intercept_slope.txt"
     path "*_mqc.txt", emit: report
-    path "v_dupRadar.txt"
 
     script:
     """
-    dupRadar.r ${bam} ${params.gtf} 0 paired 1
+    dupRadar.r ${bam} ${params.gtf} ${params.strandedness} paired 1
     Rscript -e "write(x=as.character(packageVersion('dupRadar')), file='v_dupRadar.txt')"
     """
 }
+
+// Usage: dupRadar.r <input.bam> <annotation.gtf> <strandDirection:0=unstranded/1=forward/2=reverse> <paired/single> <nbThreads> <R-package-location (optional)>
