@@ -5,13 +5,8 @@ baseDir='/mnt/d/RNAseq'
     params.bed12="${baseDir}/ercc_samples/ref/bed12/chr22_with_ERCC92.bed12"
     params.csvDir ="${baseDir}/metadata/ercc_fullmeta.csv"
     params.gtf="${baseDir}/ercc_samples/ref/gtf/chr22_with_ERCC92.gtf"
-    params.bam_suffix = "_Aligned.sortedByCoord.out.bam"
     params.design="${baseDir}/metadata/design.csv"
     params.compare="${baseDir}/metadata/comparison.csv"
-    params.deseq2_fdr = 0.05
-    params.deseq2_lfc = 0.585
-    params.gprofiler_fdr = 0.05
-    params.gprofiler_organism = 'hsapiens'
 
 meta = Channel.from(file(params.csvDir))
     .splitCsv(header:true)
