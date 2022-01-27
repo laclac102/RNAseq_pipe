@@ -1,4 +1,5 @@
 process featurecounts {
+    label 'low_memory'
     tag "FeatureCounts from $pair_id"
     publishDir "${baseDir}/ercc_samples/output/featurecounts" , mode:'copy'
 
@@ -19,7 +20,7 @@ process featurecounts {
 
 process merge_counts {
     publishDir "${baseDir}/ercc_samples/output/merge_counts", mode: 'copy'
-
+    tag "Merge Featuresfor all samples"
     input:
     path(counts)
 
