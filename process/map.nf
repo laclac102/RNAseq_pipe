@@ -58,7 +58,7 @@ process mapping {
     --runThreadN ${task.cpus} \\
     --outSAMtype BAM SortedByCoordinate \\
     --peOverlapNbasesMin ${params.star_min_overlap} \\
-    --alignIntronMax 1 \\
+    --alignIntronMax ${params.ailgn_intron_max} \\
     --peOverlapMMp ${params.star_max_overlap_mismatch}
 
     samtools index ${pair_id}_Aligned.sortedByCoord.out.bam

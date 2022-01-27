@@ -13,7 +13,7 @@ process featurecounts {
 
     script:
     """
-    featureCounts -a ${params.gtf} -F 'GTF' -g 'gene_id' -t 'exon' -o ${pair_id}_gene.featureCounts.txt --extraAttributes 'gene_name' -p -s 1 ${bam} -T 1
+    featureCounts -a ${params.gtf} -F 'GTF' -g ${params.fc_group_features} -t 'exon' -o ${pair_id}_gene.featureCounts.txt --extraAttributes ${params.fc_extra_attributes} -p -s 1 ${bam} -T 1
     """
 }
 
