@@ -1,8 +1,6 @@
 nextflow.enable.dsl=2
 
 baseDir='/mnt/d/RNAseq'
-    params.length=20
-    params.quality=20
     params.genomeDir="${baseDir}/ercc_samples/ref/index"
     params.bed12="${baseDir}/ercc_samples/ref/bed12/chr22_with_ERCC92.bed12"
     params.csvDir ="${baseDir}/metadata/ercc_fullmeta.csv"
