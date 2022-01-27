@@ -29,7 +29,7 @@ process trimming {
 
     script:
     """
-    trim_galore --paired --fastqc --retain_unpaired --length ${params.length} \\
+    trim_galore --paired --fastqc --length ${params.length} \\
     -j $task.cpus ${read1} ${read2} \\
     --basename ${pair_id}
     """
@@ -41,7 +41,7 @@ process mapping {
     publishDir "${baseDir}/ercc_samples/output/map", mode: 'copy'
     
     input:
-    tuple val(pair_id), path(trim)
+    tuple val(pair_id), path(trim_out)
     path params.genomeDir
     
     output:
