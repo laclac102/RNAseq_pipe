@@ -1,4 +1,0 @@
-2022-01-26 09:07:08	-	special_banach	-	f09e3cc3e991473a3691cb3dd5aec73c	ea434f55-4329-4396-90c2-af0240614a20	nextflow run rnaseq.nf -with-docker zymo/rnaseq -with-dag summary.png
-2022-01-26 09:07:31	3.2s	naughty_gutenberg	ERR	f09e3cc3e991473a3691cb3dd5aec73c	6f7e8671-0f9c-4b0e-9f33-f5ab1ce7a5c8	nextflow run rnaseq.nf -with-docker zymo/rnaseq -with-dag summary.png
-2022-01-26 09:08:21	3.1s	serene_lamarr	ERR	f09e3cc3e991473a3691cb3dd5aec73c	2d2b1de0-78f7-4ba9-97e7-378670920d48	nextflow run rnaseq.nf -with-docker zymo/rnaseq -with-dag summary.png
-2022-01-26 09:09:52	6.2s	elegant_perlman	ERR	f09e3cc3e991473a3691cb3dd5aec73c	783a0337-21c1-4cb2-8119-7c64ecb16d93	nextflow run rnaseq.nf -with-docker zymo/rnaseq -with-dag summary.png
