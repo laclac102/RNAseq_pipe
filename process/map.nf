@@ -23,7 +23,7 @@ process trimming {
     tuple val(pair_id), path(read1), path(read2)
 
     output:
-    tuple val(pair_id), path("*fq.gz"), emit: trim_out
+    tuple val(pair_id), path("*fq"), emit: trim_out
     path '*trimming_report.txt', emit: report
     path '*_fastqc.{zip,html}', emit: report_trim_qc
 
@@ -59,19 +59,10 @@ process mapping {
     --outSAMtype BAM SortedByCoordinate \\
     --peOverlapNbasesMin 10 \\
     --alignIntronMax 1 \\
-    --readFilesCommand zcat \\
     --peOverlapMMp 0.01
 
     samtools index ${pair_id}_Aligned.sortedByCoord.out.bam
     samtools index -c ${pair_id}_Aligned.sortedByCoord.out.bam
     """
 }
-// workflow {
-
-//     qc(read_pairs_ch)
-
-//     trimming(read_pairs_ch)
-
-//     mapping(trimming.out.trim_out, params.genomeDir)
-// }
-// ${baseDir}/ercc_samples/output/trim/*_val_2.fq
+    // --readFilesCommand zcat \\
